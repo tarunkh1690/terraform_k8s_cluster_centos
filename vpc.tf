@@ -5,7 +5,7 @@ resource "aws_vpc" "k8s-vpc" {
     enable_classiclink = "false"
     instance_tenancy = "default"
     
-    tags {
+    tags = {
         Name = "k8s-vpc"
     }
 }

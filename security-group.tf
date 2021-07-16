@@ -14,7 +14,7 @@ resource "aws_security_group" "k8s-security-group" {
         // This means, all ip address are allowed to ssh ! 
         // Do not do it in the production. 
         // Put your office or home address in it!
-        cidr_blocks = ["106.193.0.0/16"]
+        cidr_blocks = ["103.0.0.0/8","47.9.168.0/24"]
     }
     ingress {
         from_port = 0
@@ -23,16 +23,16 @@ resource "aws_security_group" "k8s-security-group" {
         // This means, all ip address are allowed to ssh ! 
         // Do not do it in the production. 
         // Put your office or home address in it!
-        cidr_blocks = ["172.31.0.0/16"]
+        cidr_blocks = ["10.10.0.0/16"]
     }
     //If you do not add this rule, you can not reach the NGIX  
     ingress {
         from_port = 0
         to_port = 65535
         protocol = "tcp"
-        cidr_blocks = ["106.193.0.0/16"]
+        cidr_blocks = ["103.0.0.0/8","47.9.168.0/24"]
     }
-    tags {
+    tags = {
         Name = "k8s-security-group"
     }
 }

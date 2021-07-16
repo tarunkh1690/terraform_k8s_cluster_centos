@@ -1,10 +1,10 @@
 variable "aws_region" {
-  type    = "string"
+#  type    = "string"
   default = "ap-south-1"
 }
 
 variable "aws_vpc_cidr" {
-  type    = "string"
+#  type    = "string"
   default = "10.10.0.0/16"
 }
 
@@ -29,15 +29,15 @@ variable "master_instance_count" {
 }
 
 variable "node_instance_count" {
-  default = "1"
+  default = "2"
 }
 
 
 variable "AMIS" {
   default = {
-    ap-south-1 = "ami-0123b531fc646552f"
-    ap-south-1b = "ami-0123b531fc646552f"
-    ap-south-1c = "ami-0123b531fc646552f"
+    ap-south-1 = "ami-011c99152163a87ae"
+    ap-south-1b = "ami-011c99152163a87ae"
+    ap-south-1c = "ami-011c99152163a87ae"
   }
 }
 

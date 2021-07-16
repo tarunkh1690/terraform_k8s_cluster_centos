@@ -1,0 +1,35 @@
+#!/bin/bash
+
+sudo yum update -y
+sudo yum install -y apt-transport-https
+sudo cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+ [kubernetes]
+ name=Kubernetes
+ baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+ enabled=1
+ gpgcheck=1
+ repo_gpgcheck=1
+ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg 
+EOF
+cat <<EOF > /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+sudo yum clean all
+sudo yum repolist
+sudo yum install -y docker
+sudo yum install -y kubelet-1.18*  kubeadm-1.18* kubectl-1.18* kubernetes-cni
+sudo kubeadm init --ignore-preflight-errors=NumCPU >> /tmp/kubeadminit.log
+sudo cat /tmp/kubeadminit.log | tail -n2 > /tmp/kubeadm_join.sh
+sudo mkdir -p /root/.aws/; sudo touch /root/.aws/config
+echo -e "[default]\nregion = ap-south-1" | sudo tee -a /root/.aws/config > /dev/null
+sudo aws s3 cp /tmp/kubeadm_join.sh s3://k8s-join-master/
+
+# kubectl configuration
+sudo mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+sudo sysctl net.bridge.bridge-nf-call-iptables=1
+sleep 120
+export kubever=$(kubectl version | base64 | tr -d '\n') | sudo tee -a /tmp/output > /dev/null
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(cat /tmp/output)"
