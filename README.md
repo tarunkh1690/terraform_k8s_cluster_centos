@@ -7,8 +7,7 @@
 3- replace the cidr_blocks values in security_group.tf according to your IP range else you can allow for ["0.0.0.0/8"].
 
 
-ingress {
-
+        ingress {
         from_port = 22
         to_port = 22
         protocol = "tcp"
@@ -16,6 +15,5 @@ ingress {
         // Do not do it in the production. 
         // Put your office or home address in it!
         cidr_blocks = ["103.0.0.0/8","47.9.168.0/24"]
-        
         }
  
