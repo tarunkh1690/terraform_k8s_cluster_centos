@@ -7,9 +7,10 @@
 3- replace the cidr_blocks values in security_group.tf according to your IP range else you can allow for ["0.0.0.0/8"].
 
 
-ingress {\n
-        from_port = 22\n
-        to_port = 22\n
+ingress {
+
+        from_port = 22
+        to_port = 22
         protocol = "tcp"
         // This means, all ip address are allowed to ssh ! 
         // Do not do it in the production. 
